@@ -1,0 +1,215 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>損傷図スキャン箱 かんたんマニュアル</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Yu Gothic", "Meiryo", sans-serif;
+    line-height: 1.8;
+    color: #1f2937;
+    background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+  }
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 32px 20px 64px;
+  }
+  .hero {
+    background: #ffffff;
+    border: 1px solid #dbe7ff;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 10px 24px rgba(30, 64, 175, 0.08);
+  }
+  h1 {
+    margin: 0 0 8px;
+    font-size: 32px;
+    color: #1e40af;
+  }
+  .sub {
+    margin: 0;
+    color: #475569;
+    font-size: 16px;
+  }
+  section {
+    background: #fff;
+    border: 1px solid #dbe7ff;
+    border-radius: 14px;
+    margin-top: 18px;
+    padding: 22px;
+  }
+  h2 {
+    margin: 0 0 12px;
+    font-size: 22px;
+    color: #1e3a8a;
+    border-left: 6px solid #2563eb;
+    padding-left: 10px;
+  }
+  h3 {
+    margin: 18px 0 8px;
+    font-size: 18px;
+    color: #1d4ed8;
+  }
+  ul, ol { margin: 8px 0 8px 20px; }
+  .card {
+    background: #f8fbff;
+    border: 1px solid #c7dbff;
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 10px;
+  }
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .step {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .ok { color: #065f46; }
+  .ng { color: #b91c1c; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  th, td {
+    border: 1px solid #c7d2fe;
+    padding: 10px;
+    vertical-align: top;
+  }
+  th {
+    background: #e0e7ff;
+    text-align: left;
+    color: #1f3a8a;
+  }
+  .faq dt {
+    font-weight: 700;
+    margin-top: 10px;
+    color: #0f172a;
+  }
+  .faq dd {
+    margin: 4px 0 0 0;
+    color: #334155;
+  }
+  .footer-note {
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+  }
+  @media (max-width: 760px) {
+    h1 { font-size: 26px; }
+    .flow { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <h1>損傷図スキャン箱 ― かんたんマニュアル</h1>
+      <p class="sub">写真を入れるだけで、CAD図面と数量計算表を自動作成する現場向けガイド</p>
+    </header>
+
+    <section>
+      <h2>まず、このツールって何？</h2>
+      <p>「損傷図をCADに書き直す作業」と「補修材料の数量を計算する作業」を、写真を入れるだけでAIが自動処理するツールです。</p>
+      <p>利用者がやることは、写真またはPDFをフォルダに入れるだけです。</p>
+      <div class="card">
+        <h3>デスクトップ構成</h3>
+        <table>
+          <tr><th>フォルダ</th><th>役割</th></tr>
+          <tr><td><code>01_ここに写真を入れる</code></td><td>入力フォルダ（写真・PDFを入れる）</td></tr>
+          <tr><td><code>02_完成した図面と計算表</code></td><td>出力フォルダ（成果物を受け取る）</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>つかいかた（3ステップ）</h2>
+      <div class="flow">
+        <div class="step">1. 写真を用意</div>
+        <div class="step">2. 「01」に入れる</div>
+        <div class="step">3. 「02」から受け取る</div>
+      </div>
+
+      <h3>ステップ1: 写真を用意する</h3>
+      <ul>
+        <li>使える形式: JPG / JPEG / PNG / PDF</li>
+        <li>明るく、ピントが合い、損傷がはっきり見える写真を使う</li>
+        <li>暗い・ブレている・関係ない対象が大きく写る写真は避ける</li>
+      </ul>
+
+      <h3>ステップ2: 「01」のフォルダに写真を入れる</h3>
+      <ol>
+        <li>デスクトップの「損傷図スキャン箱」を開く</li>
+        <li><code>01_ここに写真を入れる</code> を開く</li>
+        <li>写真ファイルをドラッグ＆ドロップ、またはコピー＆ペーストで入れる</li>
+      </ol>
+      <div class="card">
+        <p><strong>ファイル名ルール</strong></p>
+        <p class="ok">OK: <code>genba_photo_001.jpg</code> / <code>損傷写真001.jpg</code></p>
+        <p class="ng">NG: <code>損傷　写真.jpg</code>（全角スペースは不可）</p>
+        <p>1回の投入は10枚まで。多い場合は10枚ずつ分けて投入してください。</p>
+      </div>
+
+      <h3>ステップ3: 「02」のフォルダを開いて結果を取り出す</h3>
+      <ul>
+        <li>写真1枚: 約1〜2分</li>
+        <li>写真5枚: 約5〜10分</li>
+        <li>写真10枚: 約10〜20分</li>
+      </ul>
+      <p>処理完了後、<code>02_完成した図面と計算表</code> に次の2ファイルが作成されます。</p>
+      <table>
+        <tr><th>出力ファイル</th><th>内容</th></tr>
+        <tr><td><code>○○○.dxf</code></td><td>CAD図面ファイル（JW-CAD / AutoCADで利用可）</td></tr>
+        <tr><td><code>○○○.xlsx</code></td><td>数量計算表（ひび割れ長、剥離面積、補修材料量）</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>よくある質問</h2>
+      <dl class="faq">
+        <dt>Q. 写真を入れたのに何も出てこない</dt>
+        <dd>A. 監視プログラムが起動しているか確認し、未起動なら起動後に再投入してください。</dd>
+
+        <dt>Q. エラーが出る</dt>
+        <dd>A. ファイル名を英数字中心に変更し、再度 <code>01</code> に入れてください。</dd>
+
+        <dt>Q. DXFファイルとは？</dt>
+        <dd>A. CADソフトで使う図面ファイルです。JW-CADやAutoCADで開けます。</dd>
+
+        <dt>Q. 暗い写真でも使える？</dt>
+        <dd>A. 使えますが精度が落ちます。明るい再撮影を推奨します。</dd>
+
+        <dt>Q. PDFが複数ページでも大丈夫？</dt>
+        <dd>A. 全ページを自動処理します。</dd>
+
+        <dt>Q. 処理中に電源を切っていい？</dt>
+        <dd>A. 処理が終わるまで電源は切らないでください。</dd>
+
+        <dt>Q. 結果が間違っていたら？</dt>
+        <dd>A. AI結果は下書きです。最終確認は必ず人が実施してください。</dd>
+      </dl>
+    </section>
+
+    <section>
+      <h2>困ったときは</h2>
+      <p>本マニュアルで解決しない場合は、社内の担当者へ連絡してください。</p>
+      <div class="footer-note">連絡先は社内担当者に確認してください。</div>
+    </section>
+  </div>
+</body>
+</html>
