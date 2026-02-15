@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -64,7 +64,7 @@
   }
   .flow {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 10px;
     margin-top: 10px;
   }
@@ -76,8 +76,45 @@
     font-weight: 700;
     text-align: center;
   }
+  .step.once { background: #f0fdf4; border-color: #bbf7d0; }
+  .step.every { background: #eff6ff; border-color: #bfdbfe; }
+  .file {
+    display: inline-block;
+    background: #1e293b;
+    color: #60d394;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-family: "Consolas", "Source Code Pro", monospace;
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .screen {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 16px 18px;
+    border-radius: 10px;
+    font-family: "Consolas", "Source Code Pro", monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 14px 0;
+    white-space: pre-wrap;
+    border: 2px solid #334155;
+  }
+  .screen .g { color: #60d394; }
+  .screen .y { color: #fbbf24; }
   .ok { color: #065f46; }
   .ng { color: #b91c1c; }
+  .photo-row { display: flex; gap: 14px; margin: 14px 0; }
+  .photo-card {
+    flex: 1; border-radius: 10px;
+    padding: 14px; text-align: center;
+  }
+  .photo-good { background: #eafaf1; border: 2px solid #27ae60; }
+  .photo-bad  { background: #fff0f0; border: 2px solid #e74c3c; }
+  .photo-card .lbl { font-size: 17px; font-weight: bold; margin-bottom: 6px; }
+  .photo-good .lbl { color: #27ae60; }
+  .photo-bad  .lbl { color: #e74c3c; }
+  .photo-card ul { text-align: left; padding-left: 18px; font-size: 13px; }
   table {
     width: 100%;
     border-collapse: collapse;
@@ -103,6 +140,18 @@
     margin: 4px 0 0 0;
     color: #334155;
   }
+  .note {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .note-blue   { background: #eef4fb; border-left: 5px solid #2b5ea7; }
+  .note-green  { background: #eafaf1; border-left: 5px solid #27ae60; }
+  .note-red    { background: #fff0f0; border-left: 5px solid #e74c3c; }
+  .note-yellow { background: #fffbe6; border-left: 5px solid #f0c040; }
+  .note strong { display: block; margin-bottom: 2px; }
   .footer-note {
     margin-top: 16px;
     padding: 12px;
@@ -110,9 +159,41 @@
     background: #fff7ed;
     border: 1px solid #fed7aa;
   }
+  .big-step {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    border-radius: 12px;
+    background: #f0f7ff;
+    border: 2px solid #c5d9f0;
+  }
+  .big-step.done { background: #eafaf1; border-color: #a3d9b1; }
+  .big-num {
+    flex-shrink: 0;
+    width: 52px; height: 52px; line-height: 52px;
+    text-align: center;
+    background: #2b5ea7;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .big-num.green { background: #27ae60; }
+  .big-text { flex: 1; }
+  .big-text strong { font-size: 18px; display: block; margin-bottom: 2px; }
+  .big-text p { font-size: 14px; color: #555; margin: 0; }
+  .arrow-center {
+    text-align: center;
+    font-size: 28px;
+    color: #2b5ea7;
+    margin: -4px 0 8px;
+  }
   @media (max-width: 760px) {
     h1 { font-size: 26px; }
     .flow { grid-template-columns: 1fr; }
+    .photo-row { flex-direction: column; }
   }
 </style>
 </head>
@@ -120,89 +201,221 @@
   <div class="wrap">
     <header class="hero">
       <h1>損傷図スキャン箱 ― かんたんマニュアル</h1>
-      <p class="sub">写真を入れるだけで、CAD図面と数量計算表を自動作成する現場向けガイド</p>
+      <p class="sub">写真を選ぶだけで、CAD図面と数量計算表を自動作成</p>
     </header>
 
     <section>
       <h2>まず、このツールって何？</h2>
-      <p>「損傷図をCADに書き直す作業」と「補修材料の数量を計算する作業」を、写真を入れるだけでAIが自動処理するツールです。</p>
-      <p>利用者がやることは、写真またはPDFをフォルダに入れるだけです。</p>
-      <div class="card">
-        <h3>デスクトップ構成</h3>
-        <table>
-          <tr><th>フォルダ</th><th>役割</th></tr>
-          <tr><td><code>01_ここに写真を入れる</code></td><td>入力フォルダ（写真・PDFを入れる）</td></tr>
-          <tr><td><code>02_完成した図面と計算表</code></td><td>出力フォルダ（成果物を受け取る）</td></tr>
-        </table>
+      <p>「損傷図をCADに書き直す作業」と「補修材料の数量を計算する作業」を、写真を選ぶだけでAIが自動処理するツールです。</p>
+      <p>利用者がやることは、<span class="file">run.bat</span> をダブルクリックして写真を1枚選ぶだけです。</p>
+    </section>
+
+    <section>
+      <h2>やることはこれだけ</h2>
+      <div class="flow">
+        <div class="step once">0. Pythonを入れる（最初だけ）</div>
+        <div class="step once">1. install.bat（最初だけ）</div>
+        <div class="step every">2. run.bat で写真を選ぶ（毎回）</div>
       </div>
     </section>
 
     <section>
-      <h2>つかいかた（3ステップ）</h2>
-      <div class="flow">
-        <div class="step">1. 写真を用意</div>
-        <div class="step">2. 「01」に入れる</div>
-        <div class="step">3. 「02」から受け取る</div>
+      <h2>準備（最初の1回だけ）</h2>
+
+      <h3>STEP 0: Pythonを入れる</h3>
+      <div class="note note-blue">
+        <strong>Pythonってなに？</strong>
+        このツールを動かすための「エンジン」です。無料で入れられます。すでに入っている場合はとばしてOKです。
       </div>
-
-      <h3>ステップ1: 写真を用意する</h3>
-      <ul>
-        <li>使える形式: JPG / JPEG / PNG / PDF</li>
-        <li>明るく、ピントが合い、損傷がはっきり見える写真を使う</li>
-        <li>暗い・ブレている・関係ない対象が大きく写る写真は避ける</li>
-      </ul>
-
-      <h3>ステップ2: 「01」のフォルダに写真を入れる</h3>
       <ol>
-        <li>デスクトップの「損傷図スキャン箱」を開く</li>
-        <li><code>01_ここに写真を入れる</code> を開く</li>
-        <li>写真ファイルをドラッグ＆ドロップ、またはコピー＆ペーストで入れる</li>
+        <li><a href="https://www.python.org/downloads/">https://www.python.org/downloads/</a> を開く</li>
+        <li>黄色い「Download」ボタンを押す</li>
+        <li>ダウンロードしたファイルをダブルクリック</li>
+        <li><strong style="color:#e74c3c;">「Add Python to PATH」にチェックを入れる（一番大事！）</strong></li>
+        <li>「Install Now」を押す → 終わるまで待つ</li>
       </ol>
-      <div class="card">
-        <p><strong>ファイル名ルール</strong></p>
-        <p class="ok">OK: <code>genba_photo_001.jpg</code> / <code>損傷写真001.jpg</code></p>
-        <p class="ng">NG: <code>損傷　写真.jpg</code>（全角スペースは不可）</p>
-        <p>1回の投入は10枚まで。多い場合は10枚ずつ分けて投入してください。</p>
+
+      <h3>STEP 1: install.bat をダブルクリック</h3>
+      <div class="note note-blue">
+        <strong>何をするの？</strong>
+        ツールに必要な部品を自動でダウンロードします。ネットに繋いだ状態で実行してください。
+      </div>
+      <div class="big-step">
+        <div class="big-num">1</div>
+        <div class="big-text">
+          <strong><span class="file">install.bat</span> をダブルクリック</strong>
+          <p>黒い画面が出て自動で進みます。触らずに待つだけです</p>
+        </div>
+      </div>
+      <div class="screen"><span class="y">  コンクリート損傷チェッカー ― インストール</span>
+
+<span class="g">[OK]</span> Python が見つかりました。
+仮想環境（venv）を作成しています...
+<span class="g">[OK]</span> 仮想環境を作成しました。
+必要なライブラリをインストールしています...
+
+<span class="y">  インストール完了！</span></div>
+      <div class="note note-green">
+        <strong>「インストール完了！」と出たら成功です。</strong>
+        何かキーを押すと閉じます。次からは install.bat は使いません。
+      </div>
+      <div class="note note-red">
+        <strong>「Python が見つかりません」と出たら？</strong>
+        STEP 0 をやり直してください。「Add Python to PATH」のチェック忘れが原因です。
+      </div>
+    </section>
+
+    <section>
+      <h2>つかいかた（毎回これだけ！）</h2>
+
+      <div class="big-step done">
+        <div class="big-num green">1</div>
+        <div class="big-text">
+          <strong><span class="file">run.bat</span> をダブルクリック</strong>
+          <p>これだけで始まります</p>
+        </div>
+      </div>
+      <div class="arrow-center">&#x25BC;</div>
+
+      <div class="big-step done">
+        <div class="big-num green">2</div>
+        <div class="big-text">
+          <strong>写真をえらぶ</strong>
+          <p>いつもの「ファイルを開く」画面が出ます。コンクリートの写真を1枚選んで「開く」を押す</p>
+        </div>
+      </div>
+      <div class="arrow-center">&#x25BC;</div>
+
+      <div class="big-step done">
+        <div class="big-num green">3</div>
+        <div class="big-text">
+          <strong>待つ</strong>
+          <p>自動で解析が始まります。何もしなくてOK</p>
+        </div>
+      </div>
+      <div class="arrow-center">&#x25BC;</div>
+
+      <div class="big-step done">
+        <div class="big-num green">4</div>
+        <div class="big-text">
+          <strong>output フォルダが開く＝完了！</strong>
+          <p>結果のファイルが入っています</p>
+        </div>
       </div>
 
-      <h3>ステップ3: 「02」のフォルダを開いて結果を取り出す</h3>
-      <ul>
-        <li>写真1枚: 約1〜2分</li>
-        <li>写真5枚: 約5〜10分</li>
-        <li>写真10枚: 約10〜20分</li>
-      </ul>
-      <p>処理完了後、<code>02_完成した図面と計算表</code> に次の2ファイルが作成されます。</p>
+      <div class="screen"><span class="y">  コンクリート損傷チェッカー</span>
+<span class="y">  写真を選ぶだけで使えます</span>
+
+  チェックしたい写真を選んでください。
+
+  選んだ写真: C:\写真\damage_photo.jpg
+  解析しています。しばらくお待ちください...
+
+  ひび割れを 3 箇所検出しました（合計延長: 1.250 m）。
+  剥離を 1 箇所検出しました（合計面積: 0.340 m2）。
+
+<span class="g">  完了しました！
+  output フォルダに結果が入っています。</span></div>
+
+      <div class="note note-green">
+        <strong>これだけです！</strong>
+        入力するものはありません。写真を選ぶだけ。
+      </div>
+    </section>
+
+    <section>
+      <h2>結果ファイルの見方</h2>
+      <p><code>output</code> フォルダに <strong>2つのファイル</strong> ができます。</p>
       <table>
-        <tr><th>出力ファイル</th><th>内容</th></tr>
-        <tr><td><code>○○○.dxf</code></td><td>CAD図面ファイル（JW-CAD / AutoCADで利用可）</td></tr>
-        <tr><td><code>○○○.xlsx</code></td><td>数量計算表（ひび割れ長、剥離面積、補修材料量）</td></tr>
+        <tr><th>出力ファイル</th><th>内容</th><th>開くソフト</th></tr>
+        <tr>
+          <td><code>damage_report.dxf</code></td>
+          <td>ひび割れ・剥離の場所がわかるCAD図面</td>
+          <td>Jw_cad（無料）/ AutoCAD</td>
+        </tr>
+        <tr>
+          <td><code>damage_report.xlsx</code></td>
+          <td>数量計算表（ひび割れ長、剥離面積、補修材料量）</td>
+          <td>Excel</td>
+        </tr>
       </table>
+      <div class="note note-yellow">
+        <strong>Jw_cad は無料です</strong>
+        <a href="https://www.jwcad.net/">https://www.jwcad.net/</a> からダウンロードできます。
+      </div>
+      <div class="note note-blue">
+        <strong>結果の上書きに注意</strong>
+        もう1回実行すると前の結果が上書きされます。残したいときは output フォルダから別の場所にコピーしてください。
+      </div>
+    </section>
+
+    <section>
+      <h2>使える写真</h2>
+      <div class="card">
+        <strong>対応ファイル形式:</strong> JPG / JPEG / PNG
+      </div>
+      <div class="photo-row">
+        <div class="photo-card photo-good">
+          <div class="lbl">よい写真</div>
+          <ul>
+            <li>ピントが合っている</li>
+            <li>ひび割れがはっきり見える</li>
+            <li>明るい場所で撮っている</li>
+            <li>まっすぐ撮っている</li>
+          </ul>
+        </div>
+        <div class="photo-card photo-bad">
+          <div class="lbl">ダメな写真</div>
+          <ul>
+            <li>ぼやけている・ブレている</li>
+            <li>暗すぎて見えない</li>
+            <li>ひび割れが遠すぎて小さい</li>
+            <li>関係ないものが大きく写っている</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <section>
       <h2>よくある質問</h2>
       <dl class="faq">
-        <dt>Q. 写真を入れたのに何も出てこない</dt>
-        <dd>A. 監視プログラムが起動しているか確認し、未起動なら起動後に再投入してください。</dd>
+        <dt>Q. 写真を選ぶ画面が出ない</dt>
+        <dd>A. ウィンドウの後ろに隠れています。タスクバーで「コマンドプロンプト」をクリックしてください。</dd>
 
-        <dt>Q. エラーが出る</dt>
-        <dd>A. ファイル名を英数字中心に変更し、再度 <code>01</code> に入れてください。</dd>
+        <dt>Q.「まだ準備ができていません」と出た</dt>
+        <dd>A. install.bat をまだ実行していません。先に install.bat をダブルクリックしてください。</dd>
+
+        <dt>Q.「Python が見つかりません」と出た</dt>
+        <dd>A. Pythonをインストールしてください。「Add Python to PATH」のチェック忘れが原因です。</dd>
+
+        <dt>Q.「うまくいきませんでした」と出た</dt>
+        <dd>A. 写真がぼやけていたり暗すぎる可能性があります。ピントの合った明るい写真でもう一度試してください。</dd>
 
         <dt>Q. DXFファイルとは？</dt>
-        <dd>A. CADソフトで使う図面ファイルです。JW-CADやAutoCADで開けます。</dd>
+        <dd>A. CADソフトで使う図面ファイルです。Jw_cadやAutoCADで開けます。Jw_cadは無料です。</dd>
 
         <dt>Q. 暗い写真でも使える？</dt>
-        <dd>A. 使えますが精度が落ちます。明るい再撮影を推奨します。</dd>
+        <dd>A. 使えますが精度が落ちます。フラッシュを使って明るく撮り直すことを推奨します。</dd>
 
-        <dt>Q. PDFが複数ページでも大丈夫？</dt>
-        <dd>A. 全ページを自動処理します。</dd>
+        <dt>Q. もう1回やりたい</dt>
+        <dd>A. run.bat をもう一度ダブルクリックするだけです。前の結果は上書きされるので、残したいときは別の場所にコピーしてください。</dd>
 
-        <dt>Q. 処理中に電源を切っていい？</dt>
+        <dt>Q. 解析中に電源を切っていい？</dt>
         <dd>A. 処理が終わるまで電源は切らないでください。</dd>
 
         <dt>Q. 結果が間違っていたら？</dt>
         <dd>A. AI結果は下書きです。最終確認は必ず人が実施してください。</dd>
       </dl>
+    </section>
+
+    <section>
+      <h2>動作に必要なもの</h2>
+      <table>
+        <tr><th>項目</th><th>内容</th></tr>
+        <tr><td>OS</td><td>Windows 10 / 11</td></tr>
+        <tr><td>Python</td><td>3.10 以上（<a href="https://www.python.org/downloads/">無料ダウンロード</a>）</td></tr>
+        <tr><td>ネット接続</td><td>初回セットアップ時のみ必要</td></tr>
+      </table>
     </section>
 
     <section>
